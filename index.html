@@ -272,8 +272,11 @@
   .copy-line button{font-family:var(--mono);font-size:11px;letter-spacing:0.03em;background:var(--accent);color:var(--accent-ink);border:none;border-radius:4px;padding:5px 9px;cursor:pointer;font-weight:600;}
   .copy-line button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 
-  footer{padding-block:26px 44px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  footer{padding-block:26px 44px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;}
   footer .mono-label{font-size:11px;}
+  .footer-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;}
+  .footer-links a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--muted);border-bottom:1px solid transparent;padding-bottom:2px;}
+  .footer-links a:hover, .footer-links a:focus-visible{color:var(--ink);border-color:var(--accent);}
 
   @media (max-width:720px){.flow-row{grid-template-columns:1fr;}}
   @media (prefers-reduced-motion: reduce){*{transition:none !important;}}
@@ -295,7 +298,7 @@
 
   <div class="hero">
     <div class="eyebrow"><span class="dot"></span><span class="mono-label">Remote · India / US hours · Available for consulting</span></div>
-    <h1>Backend &amp; AI systems for products that move <span class="hl">money.</span></h1>
+    <h1>Fullstack &amp; AI systems that <span class="hl">scale.</span></h1>
     <p class="lede">I'm <strong>Amit Kumar</strong>, a software engineer and IIT Bombay graduate who designs and ships the infrastructure underneath high-stakes products — building AI agent harnesses, guardrails, and the backend systems running behind them.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="mailto:amitkr.iitbombay@gmail.com?subject=Consulting%20inquiry">Start a project →</a>
@@ -305,7 +308,7 @@
 
   <section id="capabilities" aria-labelledby="cap-h">
     <div class="section-head">
-      <h2 id="cap-h">What I bring in</h2>
+      <h2 id="cap-h">Tech Stack</h2>
       <span class="fig">FIG. 01 — CAPABILITY MAP</span>
     </div>
     <div class="cap-strip">
@@ -331,8 +334,8 @@
         <h3>Frameworks &amp; Infra</h3>
         <div class="row">
           <div class="cap-track">
-            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
-            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
+            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">React</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
+            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">React</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
           </div>
         </div>
       </div>
@@ -364,6 +367,11 @@
         <div class="row1"><h3>Wipro GE Healthcare</h3><span class="role">Project Engineer / Engineering Intern · May 2019 – Mar 2022 · Bangalore</span></div>
         <p>Embedded-systems security.</p>
         <div class="tags"><span class="chip">Embedded</span><span class="chip">BLE</span><span class="chip">Security</span></div>
+      </div>
+      <div class="node">
+        <div class="row1"><h3>Indian Institute of Technology Bombay</h3><span class="role">2016 – 2021 · Mumbai</span></div>
+        <p>Bachelor's and Master's in Engineering</p>
+        <div class="tags"><span class="chip">Education</span></div>
       </div>
     </div>
   </section>
@@ -842,7 +850,10 @@
 
   <footer>
     <span class="mono-label">© 2026 Amit Kumar</span>
-    <span class="mono-label">Built for consulting inquiries — replies within 1–2 days</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/amitkuamr/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <span class="mono-label">Built for consulting inquiries — replies within 1–2 days</span>
+    </div>
   </footer>
 
 </div>
