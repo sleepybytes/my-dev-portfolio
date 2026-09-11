@@ -81,23 +81,24 @@
   .section-head h2{font-family:var(--sans);font-weight:700;font-size:1.6rem;margin:0;letter-spacing:-0.01em;}
   .section-head .fig{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
 
-  /* ---------- capabilities (scrolling stacks) ---------- */
-  .cap-strip{display:flex;flex-direction:column;gap:20px;}
-  .cap-group{display:flex;flex-direction:column;gap:10px;}
+  /* ---------- capabilities (interactive tech grid) ---------- */
+  .section-sub{font-family:var(--sans);font-size:14.5px;color:var(--muted);margin:4px 0 0;}
+  .cap-strip{display:flex;flex-direction:column;gap:22px;}
+  .cap-group{display:flex;flex-direction:column;gap:12px;}
   .cap-group h3{font-family:var(--mono);font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);margin:0;}
-  .cap-group .row{
-    position:relative;overflow:hidden;
-    -webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-    mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  .cap-group .row{display:flex;flex-wrap:wrap;gap:10px;}
+  .cap-chip{
+    font-family:var(--mono);font-size:12.5px;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);padding:8px 14px;border-radius:7px;white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, color .18s ease, background .18s ease;
   }
-  .cap-track{display:flex;gap:8px;width:max-content;}
-  .cap-chip{font-family:var(--mono);font-size:12.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:6px 11px;border-radius:5px;white-space:nowrap;}
+  .cap-chip:hover{
+    border-color:var(--accent);color:var(--accent);background:var(--accent-soft);
+    box-shadow:0 12px 22px -14px rgba(var(--accent-rgb),0.55);
+  }
   @media (prefers-reduced-motion: no-preference){
-    .cap-track{animation:cap-scroll 28s linear infinite;}
-    .cap-group:nth-child(even) .cap-track{animation-direction:reverse;}
-    .cap-group .row:hover .cap-track, .cap-group .row:focus-within .cap-track{animation-play-state:paused;}
+    .cap-chip:hover{transform:translateY(-3px);}
   }
-  @keyframes cap-scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
   /* ---------- track record ---------- */
   .pipeline{position:relative;padding-left:24px;}
@@ -112,10 +113,12 @@
   .node .tags{display:flex;flex-wrap:wrap;gap:7px;}
   .chip{font-family:var(--mono);font-size:11px;letter-spacing:0.02em;background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:3px;}
 
-  /* ---------- case studies ---------- */
-  .case-grid{display:flex;flex-direction:column;gap:28px;}
-  .case{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;}
-  @media (max-width:860px){.case{grid-template-columns:1fr;}}
+  /* ---------- case studies (square grid + modal deep dive) ---------- */
+  .case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  @media (max-width:600px){.case-grid{grid-template-columns:1fr;}}
+  .case{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;}
+  .case:nth-child(n+5){display:none;}
+  .case-grid.expanded .case:nth-child(n+5){display:block;}
   @media (prefers-reduced-motion: no-preference){
     .case{transition:transform .35s ease, box-shadow .35s ease, opacity .5s ease, translate .5s ease;}
     html:not(.no-js) .case{opacity:0;transform:translateY(18px);}
@@ -123,16 +126,39 @@
     .case:hover{transform:translateY(-5px);box-shadow:0 26px 48px -26px rgba(var(--accent-rgb),0.3);}
   }
 
-  /* large gradient visual panel */
-  .tile-visual{background:linear-gradient(135deg,#063A44 0%,#0B7285 55%,#4FD1E3 100%);display:flex;align-items:center;justify-content:center;padding:36px;}
-  .visual-window{max-width:380px;width:100%;}
+  .case-open{all:unset;box-sizing:border-box;display:flex;flex-direction:column;width:100%;aspect-ratio:1/1;cursor:pointer;}
+  .case-open:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:16px;}
+  .case-thumb{
+    flex:1;min-height:0;overflow:hidden;padding:18px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#063A44 0%,#0B7285 55%,#4FD1E3 100%);
+  }
+  .visual-window{max-width:340px;width:100%;}
+  .case-meta{padding:16px 18px 18px;border-top:1px solid var(--line);}
+  .case-meta h3{
+    font-family:var(--sans);font-weight:700;font-size:1.02rem;margin:8px 0 0;line-height:1.28;text-wrap:balance;
+    display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .case-more-wrap{display:flex;justify-content:center;margin-top:26px;}
 
-  .tile-body{padding:38px 40px;display:flex;flex-direction:column;justify-content:center;}
-  .case-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px;align-items:baseline;}
+  .case-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline;}
   .case-fig{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:0.04em;}
   .case-org{font-family:var(--mono);font-size:11px;color:var(--muted);}
-  .case h3{font-family:var(--sans);font-weight:700;font-size:1.55rem;margin:0;text-wrap:balance;letter-spacing:-0.01em;line-height:1.2;}
-  .tags.compact{margin-top:0 !important;}
+
+  dialog.case-dialog{
+    border:none;border-radius:16px;padding:0;max-width:640px;width:92vw;max-height:86vh;overflow:auto;
+    background:var(--surface);color:var(--ink);box-shadow:0 40px 90px -20px rgba(0,0,0,0.4);
+  }
+  dialog.case-dialog::backdrop{background:rgba(8,14,20,0.6);}
+  .dialog-inner{padding:36px 34px 38px;position:relative;}
+  .dialog-inner h3{font-family:var(--sans);font-weight:700;font-size:1.5rem;margin:10px 0 0;text-wrap:balance;letter-spacing:-0.01em;line-height:1.22;}
+  .dialog-close{
+    position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;
+    font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .dialog-close:hover{color:var(--ink);border-color:var(--accent);}
+  .dialog-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
   .checklist{display:flex;flex-direction:column;gap:13px;margin:20px 0 22px;padding:0;list-style:none;}
   .checklist li{display:flex;align-items:flex-start;gap:11px;font-size:15px;line-height:1.45;color:var(--ink);}
@@ -191,17 +217,6 @@
   @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.35;}}
   @keyframes pulse-text{0%,100%{opacity:1;}50%{opacity:.55;}}
 
-  /* architecture deep dive */
-  .deep-dive{margin-top:auto;border-top:1px dashed var(--line);}
-  .deep-dive summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:0.02em;color:var(--accent);padding-top:16px;}
-  .deep-dive summary::-webkit-details-marker{display:none;}
-  .deep-dive summary .chev{display:inline-flex;transition:transform .2s ease;}
-  .deep-dive[open] summary .chev{transform:rotate(90deg);}
-  .deep-dive summary:hover{color:var(--ink);}
-  .deep-dive summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
-  .deep-dive-body{padding-top:22px;}
-  .deep-dive-body .tags{margin-top:24px;}
-
   .deep-brief{font-size:14.5px;color:var(--muted);line-height:1.65;margin:0 0 26px;max-width:70ch;}
 
   /* ---------- window-framed mockup ---------- */
@@ -253,8 +268,8 @@
   .bar-fill{height:100%;background:var(--accent);width:78%;}
   .bar-label{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;justify-content:space-between;}
 
-  .case .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:24px;}
-  .case .chip{background:var(--surface-2);color:var(--muted);border:1px solid var(--line);}
+  .dialog-inner .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:24px;}
+  .dialog-inner .chip{background:var(--surface-2);color:var(--muted);border:1px solid var(--line);}
 
   /* ---------- contact ---------- */
   .contact-panel{
@@ -308,35 +323,29 @@
 
   <section id="capabilities" aria-labelledby="cap-h">
     <div class="section-head">
-      <h2 id="cap-h">Tech Stack</h2>
+      <div>
+        <h2 id="cap-h">Tech Stack</h2>
+        <p class="section-sub">An AI-powered stack built for production.</p>
+      </div>
       <span class="fig">FIG. 01 — CAPABILITY MAP</span>
     </div>
     <div class="cap-strip">
       <div class="cap-group">
         <h3>Languages</h3>
         <div class="row">
-          <div class="cap-track">
-            <span class="cap-chip">Golang</span><span class="cap-chip">Python</span><span class="cap-chip">Java</span><span class="cap-chip">JavaScript</span><span class="cap-chip">TypeScript</span><span class="cap-chip">Node.js</span><span class="cap-chip">SQL</span><span class="cap-chip">C++</span>
-            <span class="cap-chip">Golang</span><span class="cap-chip">Python</span><span class="cap-chip">Java</span><span class="cap-chip">JavaScript</span><span class="cap-chip">TypeScript</span><span class="cap-chip">Node.js</span><span class="cap-chip">SQL</span><span class="cap-chip">C++</span>
-          </div>
+          <span class="cap-chip">TypeScript</span><span class="cap-chip">Python</span><span class="cap-chip">Golang</span><span class="cap-chip">Java</span><span class="cap-chip">JavaScript</span><span class="cap-chip">Node.js</span><span class="cap-chip">SQL</span><span class="cap-chip">C++</span>
         </div>
       </div>
       <div class="cap-group">
         <h3>AI &amp; Tooling</h3>
         <div class="row">
-          <div class="cap-track">
-            <span class="cap-chip">Multi-agent orchestration</span><span class="cap-chip">RAG</span><span class="cap-chip">Prompt engineering &amp; guardrails</span><span class="cap-chip">MCP servers</span><span class="cap-chip">AI gateways</span><span class="cap-chip">n8n</span><span class="cap-chip">Claude Code · Cursor · OpenAI</span>
-            <span class="cap-chip">Multi-agent orchestration</span><span class="cap-chip">RAG</span><span class="cap-chip">Prompt engineering &amp; guardrails</span><span class="cap-chip">MCP servers</span><span class="cap-chip">AI gateways</span><span class="cap-chip">n8n</span><span class="cap-chip">Claude Code · Cursor · OpenAI</span>
-          </div>
+          <span class="cap-chip">Claude API</span><span class="cap-chip">OpenAI API</span><span class="cap-chip">Multi-agent orchestration</span><span class="cap-chip">RAG</span><span class="cap-chip">Prompt engineering &amp; guardrails</span><span class="cap-chip">MCP servers</span><span class="cap-chip">AI gateways</span><span class="cap-chip">n8n</span><span class="cap-chip">Claude Code</span><span class="cap-chip">Cursor</span>
         </div>
       </div>
       <div class="cap-group">
         <h3>Frameworks &amp; Infra</h3>
         <div class="row">
-          <div class="cap-track">
-            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">React</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
-            <span class="cap-chip">Django · Spring Boot</span><span class="cap-chip">React</span><span class="cap-chip">AWS · Docker · Kubernetes · Terraform</span><span class="cap-chip">PostgreSQL · MySQL</span><span class="cap-chip">DynamoDB · MongoDB · DuckDB</span><span class="cap-chip">Microservices · CI/CD</span>
-          </div>
+          <span class="cap-chip">React</span><span class="cap-chip">FastAPI</span><span class="cap-chip">Django</span><span class="cap-chip">Spring Boot</span><span class="cap-chip">SQLAlchemy</span><span class="cap-chip">AWS</span><span class="cap-chip">Docker</span><span class="cap-chip">Kubernetes</span><span class="cap-chip">Terraform</span><span class="cap-chip">PostgreSQL</span><span class="cap-chip">MySQL</span><span class="cap-chip">Redis</span><span class="cap-chip">DynamoDB</span><span class="cap-chip">MongoDB</span><span class="cap-chip">DuckDB</span><span class="cap-chip">Microservices</span><span class="cap-chip">CI/CD</span>
         </div>
       </div>
     </div>
@@ -379,14 +388,203 @@
   <section id="work" aria-labelledby="work-h">
     <div class="section-head">
       <h2 id="work-h">Case studies</h2>
-      <span class="fig">FIG. 03 — SELECTED ENGAGEMENTS · CLICK A TILE TO EXPAND</span>
+      <span class="fig">FIG. 03 — SELECTED ENGAGEMENTS · CLICK A CARD TO EXPAND</span>
     </div>
 
     <div class="case-grid">
 
     <!-- CASE 01 — Agent Trace Analytics Engine -->
     <article class="case">
-      <div class="tile-body">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-01">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">analytics-engine · dashboard</span></div>
+            <div class="window-body">
+              <div class="scene-kpi">
+                <span class="pill"><i></i>Ingesting live</span>
+                <div class="krow">
+                  <div class="ktile"><b>1.2K</b><span>CALLS</span></div>
+                  <div class="ktile"><b>98%</b><span>SUCCESS</span></div>
+                  <div class="ktile"><b>340ms</b><span>P50</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 01</span><span class="case-org">Agentic tool company</span></div>
+          <h3>Agent Trace: An Observability Engine for LLM Agents</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 02 — Ad Campaign Planner -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-02">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">ad-campaign · planner</span></div>
+            <div class="window-body">
+              <div class="scene-dashboard">
+                <span class="pill"><i></i>Plan generated</span>
+                <div class="cards">
+                  <div class="card">Meta Ads<br>8.7</div>
+                  <div class="card">TikTok<br>7.9</div>
+                  <div class="card">Reddit<br>6.4</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 02</span><span class="case-org">Disco</span></div>
+          <h3>Ad Campaign Planner: One Brief In, a Full Campaign Out</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 03 — Blink Health orchestration -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-03">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">orchestrator · blinkrx-prod</span></div>
+            <div class="window-body">
+              <div class="scene-dashboard">
+                <span class="pill"><i></i>Guardrails active</span>
+                <div class="cards">
+                  <div class="card">Amazon<br>Pharmacy</div>
+                  <div class="card">Uber<br>Direct</div>
+                  <div class="card">Script<br>Drop</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 03</span><span class="case-org">Blink Health</span></div>
+          <h3>Multi-Agent LLM Orchestration with HIPAA-Grade Guardrails</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 04 — CDC / release reliability -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-04">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">pipelines · blink-data</span></div>
+            <div class="window-body">
+              <div class="scene-stream">
+                <div class="sline"><span>14:02:31</span><b>orders.updated</b><span class="ok">✓</span></div>
+                <div class="sline"><span>14:02:31</span><b>rx.status_changed</b><span class="ok">✓</span></div>
+                <div class="sline live"><span>14:02:32</span><b>shipment.created</b><span class="ok">✓</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 04</span><span class="case-org">Blink Health</span></div>
+          <h3>Replacing Batch Reporting with Near-Real-Time Data Pipelines</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 05 — Stable Advisor RAG chatbot -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-05">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">stable-advisor · chat</span></div>
+            <div class="window-body">
+              <div class="scene-chat">
+                <div class="bubble user">Best 1-yr FD rate for ₹1L?</div>
+                <div class="bubble bot">Top pick: 7.8% p.a., DICGC-insured.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 05</span><span class="case-org">Stable Money</span></div>
+          <h3>Stable Advisor: An Agentic RAG Chatbot for Investment Guidance</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 06 — Payment service -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-06">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">payments · stablemoney-prod</span></div>
+            <div class="window-body">
+              <div class="scene-ledger">
+                <div class="lrow"><span>Bank Partner A</span><span>Reconciled</span></div>
+                <div class="lrow"><span>Bank Partner B</span><span>Reconciled</span></div>
+                <div class="lrow"><span>Bank Partner C</span><span>Reconciled</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 06</span><span class="case-org">Stable Money</span></div>
+          <h3>Payment Service &amp; Multi-Bank Integrations for Fixed-Income Booking</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 07 — DealShare gamification -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-07">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">gamezop · rewards</span></div>
+            <div class="window-body">
+              <div class="scene-rewards">
+                <div class="streak-mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+                <div class="bar-track"><div class="bar-fill"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 07</span><span class="case-org">DealShare</span></div>
+          <h3>Gamezop: A Gamification Platform Driving 3x Engagement</h3>
+        </div>
+      </button>
+    </article>
+
+    <!-- CASE 08 — Cart Management API -->
+    <article class="case">
+      <button class="case-open" type="button" aria-haspopup="dialog" aria-controls="dialog-08">
+        <div class="case-thumb">
+          <div class="window visual-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">cart-api · fastapi</span></div>
+            <div class="window-body">
+              <div class="scene-cart">
+                <div class="crow"><span>Whole Milk × 2<span class="tag">20% OFF</span></span><b>$7.98</b></div>
+                <div class="crow"><span>Chicken Breast × 3<span class="tag">15% OFF</span></span><b>$33.12</b></div>
+                <div class="crow"><span>Frozen Pizza × 1</span><b>$6.49</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-meta">
+          <div class="case-top"><span class="case-fig">CASE 08</span><span class="case-org">Ecommerce Client</span></div>
+          <h3>Cart Management API: Built to Extend, Not Rewrite</h3>
+        </div>
+      </button>
+    </article>
+
+    </div>
+
+    <div class="case-more-wrap">
+      <button class="btn btn-ghost" type="button" id="case-more-btn">View all case studies ↓</button>
+    </div>
+
+    <dialog class="case-dialog" id="dialog-01">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 01</span><span class="case-org">Agentic tool company</span></div>
         <h3>Agent Trace: An Observability Engine for LLM Agents</h3>
         <ul class="checklist">
@@ -395,52 +593,31 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Embedded DuckDB — zero ops overhead</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Batched SDK ingestion with automatic retry &amp; backoff</li>
         </ul>
-        <div class="tags compact"><span class="chip">LLM observability</span><span class="chip">DuckDB</span><span class="chip">React</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">A TypeScript SDK batches events — 50 events or 5 seconds, whichever first — with exponential backoff, and posts them to a <code>/capture</code> endpoint that enqueues to an async DuckDB writer. Natural-language questions map to one of 8 named SQL queries against a single wide event table, so answering them never costs a model call.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">analytics-engine · capture</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">Agent <span class="sub">TypeScript SDK</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">/capture<span class="sub">Batched · async DuckDB writer</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-row">
-                    <div class="flow-box">KPI Dashboard</div>
-                    <div class="flow-box">Trace Explorer</div>
-                    <div class="flow-box">NL Query</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">LLM observability</span><span class="chip">DuckDB</span><span class="chip">FastAPI</span><span class="chip">React</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
-          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">analytics-engine · dashboard</span></div>
+        <p class="deep-brief">A TypeScript SDK batches events — 50 events or 5 seconds, whichever first — with exponential backoff, and posts them to a <code>/capture</code> endpoint that enqueues to an async DuckDB writer. Natural-language questions map to one of 8 named SQL queries against a single wide event table, so answering them never costs a model call.</p>
+        <div class="window">
+          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">analytics-engine · capture</span></div>
           <div class="window-body">
-            <div class="scene-kpi">
-              <span class="pill"><i></i>Ingesting live</span>
-              <div class="krow">
-                <div class="ktile"><b>1.2K</b><span>CALLS</span></div>
-                <div class="ktile"><b>98%</b><span>SUCCESS</span></div>
-                <div class="ktile"><b>340ms</b><span>P50</span></div>
+            <div class="flow">
+              <div class="flow-box">Agent <span class="sub">TypeScript SDK</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">/capture<span class="sub">Batched · async DuckDB writer</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div class="flow-box">KPI Dashboard</div>
+                <div class="flow-box">Trace Explorer</div>
+                <div class="flow-box">NL Query</div>
               </div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">LLM observability</span><span class="chip">DuckDB</span><span class="chip">FastAPI</span><span class="chip">React</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 02 — Ad Campaign Planner -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-02">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 02</span><span class="case-org">Disco</span></div>
         <h3>Ad Campaign Planner: One Brief In, a Full Campaign Out</h3>
         <ul class="checklist">
@@ -449,52 +626,31 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Persona-targeted ad copy generated per campaign</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Provider-agnostic — Claude or OpenAI behind one interface</li>
         </ul>
-        <div class="tags compact"><span class="chip">LLM pipeline</span><span class="chip">Claude API</span><span class="chip">FastAPI</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Claude Haiku extracts structured attributes from the raw brief — category, audience, price tier, channel fit — with JSON retry logic. Claude Sonnet then scores publishers across five weighted dimensions and drafts persona-specific creative, behind an abstract <code>LLMClient</code> interface so Claude or OpenAI can sit behind the same pipeline.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">ad-campaign · /campaign/plan</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">Advertiser Brief</div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">Parser · Claude Haiku → Planner · Claude Sonnet<span class="sub">Provider-swappable via LLMClient</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-row">
-                    <div class="flow-box">Publisher Ranking</div>
-                    <div class="flow-box">Persona Creative</div>
-                    <div class="flow-box">Budget Split</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">LLM pipeline</span><span class="chip">Claude API</span><span class="chip">FastAPI</span><span class="chip">Docker</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
-          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">ad-campaign · planner</span></div>
+        <p class="deep-brief">Claude Haiku extracts structured attributes from the raw brief — category, audience, price tier, channel fit — with JSON retry logic. Claude Sonnet then scores publishers across five weighted dimensions and drafts persona-specific creative, behind an abstract <code>LLMClient</code> interface so Claude or OpenAI can sit behind the same pipeline.</p>
+        <div class="window">
+          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">ad-campaign · /campaign/plan</span></div>
           <div class="window-body">
-            <div class="scene-dashboard">
-              <span class="pill"><i></i>Plan generated</span>
-              <div class="cards">
-                <div class="card">Meta Ads<br>8.7</div>
-                <div class="card">TikTok<br>7.9</div>
-                <div class="card">Reddit<br>6.4</div>
+            <div class="flow">
+              <div class="flow-box">Advertiser Brief</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">Parser · Claude Haiku → Planner · Claude Sonnet<span class="sub">Provider-swappable via LLMClient</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div class="flow-box">Publisher Ranking</div>
+                <div class="flow-box">Persona Creative</div>
+                <div class="flow-box">Budget Split</div>
               </div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">LLM pipeline</span><span class="chip">Claude API</span><span class="chip">FastAPI</span><span class="chip">Docker</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 03 — Blink Health orchestration -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-03">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 03</span><span class="case-org">Blink Health</span></div>
         <h3>Multi-Agent LLM Orchestration with HIPAA-Grade Guardrails</h3>
         <ul class="checklist">
@@ -503,53 +659,32 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>HIPAA-grade schema validation with human escalation thresholds</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Routes prescriptions across Amazon Pharmacy, Uber Direct &amp; ScriptDrop</li>
         </ul>
-        <div class="tags compact"><span class="chip">LLM orchestration</span><span class="chip">Guardrails</span><span class="chip">Healthcare</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Agents act independently on low-risk steps but escalate above defined risk thresholds — every decision constrained to a validated schema and written to an immutable audit log. Keeping agents HIPAA-compliant meant schema-validated outputs and full auditability on every action, plus human escalation for high-risk steps, without collapsing response latency.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">orchestrator · blinkrx-prod</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">Prescription Event</div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">LLM Agent Orchestrator<span class="sub">Guardrails · Audit log · Human escalation</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-row">
-                    <div class="flow-box">Amazon Pharmacy</div>
-                    <div class="flow-box">Uber Direct</div>
-                    <div class="flow-box">ScriptDrop</div>
-                  </div>
-                </div>
-                <div class="stat-row"><div class="stat-tile"><b>1M+</b><span>DAILY PRESCRIPTIONS ROUTED</span></div></div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">LLM orchestration</span><span class="chip">Guardrails</span><span class="chip">Python</span><span class="chip">Healthcare</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
+        <p class="deep-brief">Agents act independently on low-risk steps but escalate above defined risk thresholds — every decision constrained to a validated schema and written to an immutable audit log. Keeping agents HIPAA-compliant meant schema-validated outputs and full auditability on every action, plus human escalation for high-risk steps, without collapsing response latency.</p>
+        <div class="window">
           <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">orchestrator · blinkrx-prod</span></div>
           <div class="window-body">
-            <div class="scene-dashboard">
-              <span class="pill"><i></i>Guardrails active</span>
-              <div class="cards">
-                <div class="card">Amazon<br>Pharmacy</div>
-                <div class="card">Uber<br>Direct</div>
-                <div class="card">Script<br>Drop</div>
+            <div class="flow">
+              <div class="flow-box">Prescription Event</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">LLM Agent Orchestrator<span class="sub">Guardrails · Audit log · Human escalation</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div class="flow-box">Amazon Pharmacy</div>
+                <div class="flow-box">Uber Direct</div>
+                <div class="flow-box">ScriptDrop</div>
               </div>
             </div>
+            <div class="stat-row"><div class="stat-tile"><b>1M+</b><span>DAILY PRESCRIPTIONS ROUTED</span></div></div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">LLM orchestration</span><span class="chip">Guardrails</span><span class="chip">Python</span><span class="chip">Healthcare</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 02 — CDC / release reliability -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-04">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 04</span><span class="case-org">Blink Health</span></div>
         <h3>Replacing Batch Reporting with Near-Real-Time Data Pipelines</h3>
         <ul class="checklist">
@@ -558,49 +693,31 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Standardized the dev → staging → prod release pipeline</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Cut deployment incidents with one consistent promotion path</li>
         </ul>
-        <div class="tags compact"><span class="chip">CDC</span><span class="chip">Event streaming</span><span class="chip">PostgreSQL</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Built the streaming pipeline off the transactional databases, and separately designed dev → staging → prod promotion pipelines so every change followed the same release path. Streaming changes out of live tables without adding load or risking data drift — ordering guarantees and replay-safety had to hold up under real transaction volume, not a demo.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">pipelines · blink-data</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">Transactional DB<span class="sub">PostgreSQL</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">CDC Event Stream<span class="sub">Ordered · replay-safe</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box">Dashboards &amp; Downstream Services</div>
-                </div>
-                <div class="stat-row">
-                  <div class="stat-tile"><b>Batch → Live</b><span>REPORTING LATENCY</span></div>
-                  <div class="stat-tile"><b>↓</b><span>DEPLOYMENT INCIDENTS</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">CDC</span><span class="chip">Event streaming</span><span class="chip">CI/CD</span><span class="chip">PostgreSQL</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
+        <p class="deep-brief">Built the streaming pipeline off the transactional databases, and separately designed dev → staging → prod promotion pipelines so every change followed the same release path. Streaming changes out of live tables without adding load or risking data drift — ordering guarantees and replay-safety had to hold up under real transaction volume, not a demo.</p>
+        <div class="window">
           <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">pipelines · blink-data</span></div>
           <div class="window-body">
-            <div class="scene-stream">
-              <div class="sline"><span>14:02:31</span><b>orders.updated</b><span class="ok">✓</span></div>
-              <div class="sline"><span>14:02:31</span><b>rx.status_changed</b><span class="ok">✓</span></div>
-              <div class="sline live"><span>14:02:32</span><b>shipment.created</b><span class="ok">✓</span></div>
+            <div class="flow">
+              <div class="flow-box">Transactional DB<span class="sub">PostgreSQL</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">CDC Event Stream<span class="sub">Ordered · replay-safe</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box">Dashboards &amp; Downstream Services</div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-tile"><b>Batch → Live</b><span>REPORTING LATENCY</span></div>
+              <div class="stat-tile"><b>↓</b><span>DEPLOYMENT INCIDENTS</span></div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">CDC</span><span class="chip">Event streaming</span><span class="chip">CI/CD</span><span class="chip">PostgreSQL</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 03 — Stable Advisor RAG chatbot -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-05">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 05</span><span class="case-org">Stable Money</span></div>
         <h3>Stable Advisor: An Agentic RAG Chatbot for Investment Guidance</h3>
         <ul class="checklist">
@@ -609,47 +726,30 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Deterministic fallbacks so return figures never hallucinate</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Live across 3,500+ Indian cities</li>
         </ul>
-        <div class="tags compact"><span class="chip">RAG</span><span class="chip">OpenAI API</span><span class="chip">Fintech</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Built the chatbot end-to-end as part of the founding team — a retrieval pipeline over live bank rate and product data, with a conversation flow that never oversteps into unlicensed advice. Bank rates and terms change daily, so a hallucinated return figure is a real trust and compliance risk — solved with RAG over a continuously-synced catalog plus deterministic fallbacks for numeric claims.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">stable-advisor · chat</span></div>
-              <div class="window-body">
-                <div class="chat-panel">
-                  <div class="bubble user">Best 1-yr FD rate for ₹1L?</div>
-                  <div class="bubble bot">Compared 11 banks — top pick: 7.8% p.a., ₹5L DICGC-insured.</div>
-                  <div class="bubble user">Is it safe?</div>
-                  <div class="bubble bot">Yes — insured up to ₹5L per bank by RBI's DICGC.</div>
-                </div>
-                <div class="stat-row">
-                  <div class="stat-tile"><b>11+</b><span>BANKS COMPARED</span></div>
-                  <div class="stat-tile"><b>3,500+</b><span>CITIES SERVED</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative UI — not an actual product screenshot</div>
-            <div class="tags"><span class="chip">RAG</span><span class="chip">OpenAI API</span><span class="chip">Fintech</span><span class="chip">Conversational AI</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
+        <p class="deep-brief">Built the chatbot end-to-end as part of the founding team — a retrieval pipeline over live bank rate and product data, with a conversation flow that never oversteps into unlicensed advice. Bank rates and terms change daily, so a hallucinated return figure is a real trust and compliance risk — solved with RAG over a continuously-synced catalog plus deterministic fallbacks for numeric claims.</p>
+        <div class="window">
           <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">stable-advisor · chat</span></div>
           <div class="window-body">
-            <div class="scene-chat">
+            <div class="chat-panel">
               <div class="bubble user">Best 1-yr FD rate for ₹1L?</div>
-              <div class="bubble bot">Top pick: 7.8% p.a., DICGC-insured.</div>
+              <div class="bubble bot">Compared 11 banks — top pick: 7.8% p.a., ₹5L DICGC-insured.</div>
+              <div class="bubble user">Is it safe?</div>
+              <div class="bubble bot">Yes — insured up to ₹5L per bank by RBI's DICGC.</div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-tile"><b>11+</b><span>BANKS COMPARED</span></div>
+              <div class="stat-tile"><b>3,500+</b><span>CITIES SERVED</span></div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative UI — not an actual product screenshot</div>
+        <div class="tags"><span class="chip">RAG</span><span class="chip">OpenAI API</span><span class="chip">Fintech</span><span class="chip">Conversational AI</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 04 — Payment service -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-06">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 06</span><span class="case-org">Stable Money</span></div>
         <h3>Payment Service &amp; Multi-Bank Integrations for Fixed-Income Booking</h3>
         <ul class="checklist">
@@ -658,54 +758,36 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Encrypted data handling across every banking partner</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Zero double-bookings despite differing settlement timing</li>
         </ul>
-        <div class="tags compact"><span class="chip">Payments</span><span class="chip">Banking APIs</span><span class="chip">Fintech</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Designed and owned the payment service from scratch — idempotent processing, reconciliation, encrypted data handling — and led the integration pattern each new banking partner plugged into. Different APIs, failure modes, and settlement timing per partner meant the reconciliation and retry layer had to be robust enough to guarantee correct money movement, with no double bookings and no silent failures.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">payments · stablemoney-prod</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">Investor App</div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">Payment Service<span class="sub">Idempotent · Reconciled · Encrypted</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-row">
-                    <div class="flow-box">Bank Partner A</div>
-                    <div class="flow-box">Bank Partner B</div>
-                    <div class="flow-box">Bank Partner C</div>
-                  </div>
-                </div>
-                <div class="badge-row">
-                  <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Idempotent</span>
-                  <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Reconciled</span>
-                  <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Encrypted</span>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">Payments</span><span class="chip">Banking APIs</span><span class="chip">Reconciliation</span><span class="chip">Fintech</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
+        <p class="deep-brief">Designed and owned the payment service from scratch — idempotent processing, reconciliation, encrypted data handling — and led the integration pattern each new banking partner plugged into. Different APIs, failure modes, and settlement timing per partner meant the reconciliation and retry layer had to be robust enough to guarantee correct money movement, with no double bookings and no silent failures.</p>
+        <div class="window">
           <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">payments · stablemoney-prod</span></div>
           <div class="window-body">
-            <div class="scene-ledger">
-              <div class="lrow"><span>Bank Partner A</span><span>Reconciled</span></div>
-              <div class="lrow"><span>Bank Partner B</span><span>Reconciled</span></div>
-              <div class="lrow"><span>Bank Partner C</span><span>Reconciled</span></div>
+            <div class="flow">
+              <div class="flow-box">Investor App</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">Payment Service<span class="sub">Idempotent · Reconciled · Encrypted</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div class="flow-box">Bank Partner A</div>
+                <div class="flow-box">Bank Partner B</div>
+                <div class="flow-box">Bank Partner C</div>
+              </div>
+            </div>
+            <div class="badge-row">
+              <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Idempotent</span>
+              <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Reconciled</span>
+              <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Encrypted</span>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">Payments</span><span class="chip">Banking APIs</span><span class="chip">Reconciliation</span><span class="chip">Fintech</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 05 — DealShare gamification -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-07">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 07</span><span class="case-org">DealShare</span></div>
         <h3>Gamezop: A Gamification Platform Driving 3x Engagement</h3>
         <ul class="checklist">
@@ -714,53 +796,36 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>3x lift in daily engagement</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Cut expired-deal errors by 90%</li>
         </ul>
-        <div class="tags compact"><span class="chip">Product</span><span class="chip">Growth</span><span class="chip">Microservices</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Designed and shipped the platform end-to-end, then built automation that kept selling prices and deal listings in sync across microservices the moment buying prices changed. Deal state lived across multiple microservices at once — a stale sync meant customers could buy an expired deal, so the fix had to be automated and real-time.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">gamezop · rewards</span></div>
-              <div class="window-body">
-                <div class="phone">
-                  <div class="phone-screen">
-                    <div class="phone-title">Rewards <span>6-day streak</span></div>
-                    <div class="streak"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
-                    <div class="badges-mini">
-                      <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="m8.2 13.9-1.5 6.4L12 17l5.3 3.3-1.5-6.4"/></svg></span>
-                      <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>
-                      <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
-                    </div>
-                    <div><div class="bar-label"><span>780 pts</span><span>Next: 1,000</span></div><div class="bar-track"><div class="bar-fill"></div></div></div>
-                  </div>
-                </div>
-                <div class="stat-row">
-                  <div class="stat-tile"><b>3x</b><span>ENGAGEMENT LIFT</span></div>
-                  <div class="stat-tile"><b>90%↓</b><span>EXPIRED-DEAL ERRORS</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="diagram-caption">Illustrative product UI — not an actual screenshot</div>
-            <div class="tags"><span class="chip">Product</span><span class="chip">Growth</span><span class="chip">Automation</span><span class="chip">Microservices</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
+        <p class="deep-brief">Designed and shipped the platform end-to-end, then built automation that kept selling prices and deal listings in sync across microservices the moment buying prices changed. Deal state lived across multiple microservices at once — a stale sync meant customers could buy an expired deal, so the fix had to be automated and real-time.</p>
+        <div class="window">
           <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">gamezop · rewards</span></div>
           <div class="window-body">
-            <div class="scene-rewards">
-              <div class="streak-mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
-              <div class="bar-track"><div class="bar-fill"></div></div>
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-title">Rewards <span>6-day streak</span></div>
+                <div class="streak"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+                <div class="badges-mini">
+                  <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="m8.2 13.9-1.5 6.4L12 17l5.3 3.3-1.5-6.4"/></svg></span>
+                  <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>
+                  <span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
+                </div>
+                <div><div class="bar-label"><span>780 pts</span><span>Next: 1,000</span></div><div class="bar-track"><div class="bar-fill"></div></div></div>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-tile"><b>3x</b><span>ENGAGEMENT LIFT</span></div>
+              <div class="stat-tile"><b>90%↓</b><span>EXPIRED-DEAL ERRORS</span></div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative product UI — not an actual screenshot</div>
+        <div class="tags"><span class="chip">Product</span><span class="chip">Growth</span><span class="chip">Automation</span><span class="chip">Microservices</span></div>
       </div>
-    </article>
+    </dialog>
 
-    <!-- CASE 06 — Cart Management API -->
-    <article class="case">
-      <div class="tile-body">
+    <dialog class="case-dialog" id="dialog-08">
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="Close">✕</button>
         <div class="case-top"><span class="case-fig">CASE 08</span><span class="case-org">Ecommerce Client</span></div>
         <h3>Cart Management API: Built to Extend, Not Rewrite</h3>
         <ul class="checklist">
@@ -769,51 +834,31 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Delivery-aware pricing with best-discount-wins logic</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Inventory validation with clear, actionable error messages</li>
         </ul>
-        <div class="tags compact"><span class="chip">FastAPI</span><span class="chip">Strategy pattern</span><span class="chip">SQLAlchemy</span></div>
-        <details class="deep-dive">
-          <summary><span class="chev">▸</span> Architecture deep dive</summary>
-          <div class="deep-dive-body">
-            <p class="deep-brief">Each promotion type — percentage, fixed — is its own class registered in a lookup table, so adding a new type means one file and one registry line; the cart service, routes, and database never change. Promotions are checked against the delivery date, not "now," and when multiple promos match a line, best-discount-wins avoids stacking into a negative total.</p>
-            <div class="window">
-              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">cart-api · promotions</span></div>
-              <div class="window-body">
-                <div class="flow">
-                  <div class="flow-box">POST /cart/items</div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-box primary">CartService<span class="sub">Delivery-aware · Inventory-checked</span></div>
-                  <div class="flow-arrow">↓</div>
-                  <div class="flow-row">
-                    <div class="flow-box">PERCENTAGE</div>
-                    <div class="flow-box">FIXED</div>
-                    <div class="flow-box">+ new types</div>
-                  </div>
-                </div>
-                <div class="stat-row">
-                  <div class="stat-tile"><b>4</b><span>ARCHITECTURE LAYERS</span></div>
-                  <div class="stat-tile"><b>Zero</b><span>ROUTE CHANGES TO EXTEND</span></div>
-                </div>
+        <p class="deep-brief">Each promotion type — percentage, fixed — is its own class registered in a lookup table, so adding a new type means one file and one registry line; the cart service, routes, and database never change. Promotions are checked against the delivery date, not "now," and when multiple promos match a line, best-discount-wins avoids stacking into a negative total.</p>
+        <div class="window">
+          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">cart-api · promotions</span></div>
+          <div class="window-body">
+            <div class="flow">
+              <div class="flow-box">POST /cart/items</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-box primary">CartService<span class="sub">Delivery-aware · Inventory-checked</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div class="flow-box">PERCENTAGE</div>
+                <div class="flow-box">FIXED</div>
+                <div class="flow-box">+ new types</div>
               </div>
             </div>
-            <div class="diagram-caption">Illustrative architecture — not to scale</div>
-            <div class="tags"><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">Strategy pattern</span><span class="chip">Ecommerce</span></div>
-          </div>
-        </details>
-      </div>
-      <div class="tile-visual">
-        <div class="window visual-window">
-          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="wtitle">cart-api · fastapi</span></div>
-          <div class="window-body">
-            <div class="scene-cart">
-              <div class="crow"><span>Whole Milk × 2<span class="tag">20% OFF</span></span><b>$7.98</b></div>
-              <div class="crow"><span>Chicken Breast × 3<span class="tag">15% OFF</span></span><b>$33.12</b></div>
-              <div class="crow"><span>Frozen Pizza × 1</span><b>$6.49</b></div>
+            <div class="stat-row">
+              <div class="stat-tile"><b>4</b><span>ARCHITECTURE LAYERS</span></div>
+              <div class="stat-tile"><b>Zero</b><span>ROUTE CHANGES TO EXTEND</span></div>
             </div>
           </div>
         </div>
+        <div class="diagram-caption">Illustrative architecture — not to scale</div>
+        <div class="tags"><span class="chip">FastAPI</span><span class="chip">SQLAlchemy</span><span class="chip">Strategy pattern</span><span class="chip">Ecommerce</span></div>
       </div>
-    </article>
-
-    </div>
+    </dialog>
   </section>
 
   <section id="contact" aria-labelledby="contact-h">
@@ -890,6 +935,30 @@
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
     tiles.forEach(function(t){ io.observe(t); });
+  })();
+
+  (function(){
+    document.querySelectorAll('.case-open').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var dialog = document.getElementById(btn.getAttribute('aria-controls'));
+        if(dialog && dialog.showModal){ dialog.showModal(); }
+      });
+    });
+    document.querySelectorAll('.case-dialog').forEach(function(dialog){
+      var closeBtn = dialog.querySelector('.dialog-close');
+      if(closeBtn){ closeBtn.addEventListener('click', function(){ dialog.close(); }); }
+      dialog.addEventListener('click', function(e){
+        if(e.target === dialog){ dialog.close(); }
+      });
+    });
+    var moreBtn = document.getElementById('case-more-btn');
+    if(moreBtn){
+      moreBtn.addEventListener('click', function(){
+        var grid = document.querySelector('.case-grid');
+        var expanded = grid.classList.toggle('expanded');
+        moreBtn.textContent = expanded ? 'Show fewer case studies ↑' : 'View all case studies ↓';
+      });
+    }
   })();
 </script>
 
